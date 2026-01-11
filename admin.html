@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Admin Panel - Manage vocabulary flashcards">
+    <meta name="theme-color" content="#6366f1">
+
+    <title>Admin - Vocabulary Flashcards</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <h1 class="login-title">Admin Access</h1>
+                <p class="login-subtitle">Enter password to manage flashcards</p>
+            </div>
+
+            <div class="login-error" id="loginError">Invalid password. Please try again.</div>
+
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label class="label" for="passwordInput">Password</label>
+                    <input type="password" class="input" id="passwordInput" placeholder="Enter admin password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <p
+                style="text-align: center; margin-top: var(--space-4); font-size: var(--font-size-sm); color: var(--text-muted);">
+                Default password: <code>admin123</code>
+            </p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-container" id="adminDashboard" style="display: none;">
+        <!-- Header -->
+        <header class="admin-header">
+            <h1 class="admin-title">Flashcard Admin</h1>
+            <div class="admin-actions">
+                <a href="index.html" class="btn btn-outline" style="padding: var(--space-2) var(--space-3);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="width: 18px; height: 18px;">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    View Cards
+                </a>
+                <button class="btn-icon" id="logoutBtn" aria-label="Logout">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Date Picker -->
+            <div class="date-picker-section">
+                <button class="date-picker-btn" id="adminPrevDate" aria-label="Previous day">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                </button>
+                <input type="date" class="date-picker-input" id="adminDatePicker">
+                <button class="date-picker-btn" id="adminNextDate" aria-label="Next day">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="todayWordsCount">0</div>
+                    <div class="stat-label">Today's Words</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-value" id="totalWordsCount">0</div>
+                    <div class="stat-label">Total Words</div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="settings-section">
+                <h2 class="section-title" style="margin-bottom: var(--space-4);">Cloud Settings</h2>
+
+                <div class="settings-item">
+                    <div class="settings-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="settings-content">
+                        <label class="settings-label" for="adminApiKey">API Key</label>
+                        <p class="settings-description">Your JSONBin.io API key for cloud storage</p>
+                        <input type="password" class="input settings-input" id="adminApiKey"
+                            placeholder="Enter API key">
+                    </div>
+                </div>
+
+                <div class="settings-item">
+                    <div class="settings-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                        </svg>
+                    </div>
+                    <div class="settings-content">
+                        <label class="settings-label" for="adminBinId">Bin ID</label>
+                        <p class="settings-description">The ID of your JSONBin storage bin</p>
+                        <input type="text" class="input settings-input" id="adminBinId" placeholder="Enter Bin ID">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: var(--space-3); margin-top: var(--space-4);">
+                    <button class="btn btn-outline" id="testApiBtn">Test Connection</button>
+                    <button class="btn btn-primary" id="saveApiBtn">Save Settings</button>
+                </div>
+
+                <div class="api-status disconnected" id="adminApiStatus" style="margin-top: var(--space-4);">
+                    <span class="api-status-dot"></span>
+                    <span id="adminApiStatusText">Not connected</span>
+                </div>
+            </div>
+
+            <!-- Add Word Section -->
+            <div class="add-word-section">
+                <div class="section-header">
+                    <h2 class="section-title">Add New Word</h2>
+                </div>
+
+                <!-- Word Count Indicator -->
+                <div class="word-count-indicator" id="wordCountIndicator">
+                    <span class="word-count-text">Words added today: <span class="word-count-number"
+                            id="wordsAddedToday">0</span>/5</span>
+                </div>
+
+                <form id="addWordForm">
+                    <!-- English Word & IPA -->
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label class="label" for="englishWord">English Word *</label>
+                            <input type="text" class="input" id="englishWord" placeholder="e.g., Vocabulary" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="label" for="ipaInput">IPA Pronunciation</label>
+                            <input type="text" class="input" id="ipaInput" placeholder="e.g., /vəˈkæbjʊləri/">
+                        </div>
+                    </div>
+
+                    <!-- Context -->
+                    <div class="form-group">
+                        <label class="label" for="contextInput">Context Sentence</label>
+                        <textarea class="textarea" id="contextInput"
+                            placeholder="e.g., Building vocabulary is essential for language learning."
+                            rows="2"></textarea>
+                    </div>
+
+                    <!-- Meaning -->
+                    <div class="form-group">
+                        <label class="label" for="meaningInput">English Meaning</label>
+                        <textarea class="textarea" id="meaningInput"
+                            placeholder="e.g., The body of words used in a particular language." rows="2"></textarea>
+                    </div>
+
+                    <!-- Bangla Meanings -->
+                    <div class="form-group">
+                        <label class="label" for="banglaMeaningsInput">Bangla Meanings</label>
+                        <input type="text" class="input" id="banglaMeaningsInput"
+                            placeholder="e.g., শব্দভাণ্ডার, শব্দসম্ভার">
+                        <p class="input-hint">Separate multiple meanings with commas</p>
+                    </div>
+
+                    <!-- Synonyms & Antonyms -->
+                    <div class="form-row two-col">
+                        <div class="form-group">
+                            <label class="label" for="synonymsInput">Synonyms</label>
+                            <input type="text" class="input" id="synonymsInput" placeholder="e.g., lexicon, glossary">
+                            <p class="input-hint">Separate with commas</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="label" for="antonymsInput">Antonyms</label>
+                            <input type="text" class="input" id="antonymsInput" placeholder="e.g., silence">
+                            <p class="input-hint">Separate with commas</p>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="clearFormBtn">Clear</button>
+                        <button type="submit" class="btn btn-primary" id="addWordBtn">Add Word</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Word List Section -->
+            <div class="word-list-section">
+                <div class="word-list-header">
+                    <h2 class="word-list-title">Words for <span id="listDateLabel">Today</span></h2>
+                    <button class="btn btn-outline" id="refreshListBtn" style="padding: var(--space-2) var(--space-3);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            style="width: 16px; height: 16px;">
+                            <path d="M23 4v6h-6M1 20v-6h6"></path>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+
+                <!-- Empty State -->
+                <div class="word-list-empty" id="wordListEmpty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                        <path d="M3 9h18M9 21V9"></path>
+                    </svg>
+                    <p>No words added for this date</p>
+                </div>
+
+                <!-- Word List -->
+                <div id="wordList"></div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Edit Word Modal -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal" role="dialog" aria-labelledby="editModalTitle">
+            <div class="modal-header">
+                <h2 class="modal-title" id="editModalTitle">Edit Word</h2>
+                <button class="btn-icon" id="closeEditModal" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editWordId">
+
+                <div class="form-group">
+                    <label class="label" for="editEnglishWord">English Word *</label>
+                    <input type="text" class="input" id="editEnglishWord" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="label" for="editIpa">IPA Pronunciation</label>
+                    <input type="text" class="input" id="editIpa">
+                </div>
+
+                <div class="form-group">
+                    <label class="label" for="editContext">Context</label>
+                    <textarea class="textarea" id="editContext" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="label" for="editMeaning">English Meaning</label>
+                    <textarea class="textarea" id="editMeaning" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="label" for="editBanglaMeanings">Bangla Meanings</label>
+                    <input type="text" class="input" id="editBanglaMeanings">
+                </div>
+
+                <div class="form-group">
+                    <label class="label" for="editSynonyms">Synonyms</label>
+                    <input type="text" class="input" id="editSynonyms">
+                </div>
+
+                <div class="form-group">
+                    <label class="label" for="editAntonyms">Antonyms</label>
+                    <input type="text" class="input" id="editAntonyms">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelEditBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveEditBtn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal" role="dialog" aria-labelledby="deleteModalTitle" style="max-width: 350px;">
+            <div class="modal-header">
+                <h2 class="modal-title" id="deleteModalTitle">Delete Word</h2>
+                <button class="btn-icon" id="closeDeleteModal" aria-label="Close">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <p style="margin-bottom: var(--space-2);">Are you sure you want to delete</p>
+                <p style="font-weight: var(--font-weight-bold); font-size: var(--font-size-lg);" id="deleteWordName">""
+                </p>
+                <input type="hidden" id="deleteWordId">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelDeleteBtn">Cancel</button>
+                <button class="btn" id="confirmDeleteBtn"
+                    style="background: var(--color-danger); color: white;">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
